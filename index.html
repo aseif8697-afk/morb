@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>𝐌𝐎𝐑𝐁 | مرعب</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #00f0ff; --secondary: #00ff88; --accent: #0066ff;
+            --dark: #0a0a0a; --darker: #050505;
+            --glass: rgba(255,255,255,0.03); --glass-border: rgba(255,255,255,0.08);
+        }
+        body { font-family: 'Tajawal', sans-serif; background: var(--darker); color: #fff; overflow-x: hidden; min-height: 100vh; }
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #0a0a0a 0%, #000 100%); }
+        .glow-orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.15; z-index: -1; animation: orbFloat 20s ease-in-out infinite; }
+        .glow-orb:nth-child(1) { width: 400px; height: 400px; background: var(--primary); top: 10%; left: 10%; }
+        .glow-orb:nth-child(2) { width: 300px; height: 300px; background: var(--secondary); bottom: 20%; right: 10%; animation-delay: -7s; }
+        .glow-orb:nth-child(3) { width: 250px; height: 250px; background: var(--accent); top: 50%; left: 50%; animation-delay: -14s; }
+        @keyframes orbFloat { 0%,100% { transform: translate(0,0) scale(1); } 25% { transform: translate(50px,-30px) scale(1.1); } 50% { transform: translate(-30px,50px) scale(0.9); } 75% { transform: translate(40px,40px) scale(1.05); } }
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; backdrop-filter: blur(20px); background: rgba(5,5,5,0.7); border-bottom: 1px solid var(--glass-border); }
+        .logo { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 3px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s; position: relative; }
+        .nav-links a:hover { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .nav-links a::after { content: ''; position: absolute; bottom: -5px; right: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 0.3s; }
+        .nav-links a:hover::after { width: 100%; }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 60px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.85rem; color: var(--primary); margin-bottom: 30px; backdrop-filter: blur(10px); animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 10px rgba(0,240,255,0.2); } 50% { box-shadow: 0 0 25px rgba(0,240,255,0.4); } }
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 900; background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1.1; margin-bottom: 20px; letter-spacing: 5px; }
+        .hero .subtitle { font-size: 1.5rem; color: rgba(255,255,255,0.6); margin-bottom: 15px; font-weight: 300; }
+        .hero .desc { max-width: 600px; color: rgba(255,255,255,0.4); font-size: 1.1rem; line-height: 1.8; margin-bottom: 40px; }
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+        .btn { padding: 15px 40px; border-radius: 50px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.4s; text-decoration: none; display: inline-flex; align-items: center; gap: 10px; border: none; font-family: 'Tajawal', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #000; box-shadow: 0 0 30px rgba(0,240,255,0.3); }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 0 50px rgba(0,240,255,0.5); }
+        .btn-outline { background: transparent; color: #fff; border: 2px solid var(--glass-border); backdrop-filter: blur(10px); }
+        .btn-outline:hover { border-color: var(--secondary); color: var(--secondary); box-shadow: 0 0 30px rgba(0,255,136,0.2); transform: translateY(-3px); }
+        .section { padding: 100px 20px; max-width: 1400px; margin: 0 auto; }
+        .section-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; text-align: center; margin-bottom: 15px; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-subtitle { text-align: center; color: rgba(255,255,255,0.4); margin-bottom: 60px; font-size: 1.1rem; }
+        .bots-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .bot-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px; padding: 40px 30px; text-align: center; transition: all 0.5s; position: relative; overflow: hidden; backdrop-filter: blur(10px); }
+        .bot-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, transparent, rgba(0,240,255,0.05)); opacity: 0; transition: opacity 0.5s; }
+        .bot-card:hover::before { opacity: 1; }
+        .bot-card:hover { transform: translateY(-10px); border-color: rgba(0,240,255,0.3); box-shadow: 0 20px 60px rgba(0,240,255,0.1); }
+        .bot-icon { width: 80px; height: 80px; border-radius: 24px; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 2rem; position: relative; z-index: 1; }
+        .bot-card:nth-child(1) .bot-icon { background: linear-gradient(135deg, #00ff88, #00cc6a); }
+        .bot-card:nth-child(2) .bot-icon { background: linear-gradient(135deg, #00f0ff, #00c8ff); }
+        .bot-card:nth-child(3) .bot-icon { background: linear-gradient(135deg, #0066ff, #3388ff); }
+        .bot-card:nth-child(4) .bot-icon { background: linear-gradient(135deg, #00f0ff, #00ff88); }
+        .bot-card h3 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 700; }
+        .bot-card p { color: rgba(255,255,255,0.5); font-size: 0.95rem; line-height: 1.7; margin-bottom: 20px; }
+        .bot-status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.2); border-radius: 50px; font-size: 0.8rem; color: #00ff88; }
+        .bot-status::before { content: ''; width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: blink 2s infinite; }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .ai-section { background: linear-gradient(180deg, transparent, rgba(0,240,255,0.03), transparent); }
+        .ai-container { max-width: 900px; margin: 0 auto; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px; overflow: hidden; backdrop-filter: blur(20px); }
+        .ai-header { padding: 25px 30px; background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(0,102,255,0.1)); border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; gap: 15px; }
+        .ai-avatar { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; animation: spin 10s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .ai-header-text h3 { font-size: 1.2rem; font-weight: 700; }
+        .ai-header-text p { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+        .ai-chat { height: 400px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .ai-chat::-webkit-scrollbar { width: 6px; }
+        .ai-chat::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+        .message { max-width: 80%; padding: 15px 20px; border-radius: 20px; font-size: 0.95rem; line-height: 1.6; animation: messageIn 0.3s ease; }
+        @keyframes messageIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .message.ai { align-self: flex-start; background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.15); border-bottom-right-radius: 5px; }
+        .message.user { align-self: flex-end; background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(0,102,255,0.2)); border: 1px solid rgba(0,240,255,0.2); border-bottom-left-radius: 5px; }
+        .ai-input-area { padding: 20px 30px; border-top: 1px solid var(--glass-border); display: flex; gap: 15px; }
+        .ai-input { flex: 1; padding: 15px 25px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 50px; color: #fff; font-size: 1rem; font-family: 'Tajawal', sans-serif; outline: none; transition: all 0.3s; }
+        .ai-input:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,240,255,0.1); }
+        .ai-input::placeholder { color: rgba(255,255,255,0.3); }
+        .ai-send { width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); border: none; color: #000; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; }
+        .ai-send:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 0 30px rgba(0,240,255,0.4); }
+        .game-container { max-width: 600px; margin: 0 auto; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 30px; padding: 30px; backdrop-filter: blur(20px); }
+        .game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; flex-wrap: wrap; gap: 10px; }
+        .game-score-box { text-align: center; }
+        .game-score-label { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 3px; }
+        .game-score-value { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--primary); text-shadow: 0 0 10px rgba(0,240,255,0.5); }
+        .game-level-value { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: var(--secondary); text-shadow: 0 0 10px rgba(0,255,136,0.5); }
+        #game-canvas { width: 100%; max-width: 540px; aspect-ratio: 1; background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(5,5,5,0.95)); border-radius: 20px; border: 2px solid var(--glass-border); display: block; margin: 0 auto 20px; }
+        .game-controls { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .game-btn { padding: 12px 30px; border-radius: 50px; border: none; font-family: 'Tajawal', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .game-btn.start { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #000; }
+        .game-btn.start:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0,240,255,0.4); }
+        .game-btn.pause { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid var(--glass-border); }
+        .game-btn.pause:hover { border-color: var(--secondary); color: var(--secondary); }
+        .game-power { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .power-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); font-family: 'Tajawal', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
+        .power-btn.active { border-color: var(--secondary); color: var(--secondary); box-shadow: 0 0 15px rgba(0,255,136,0.3); }
+        .power-btn.cooldown { opacity: 0.3; cursor: not-allowed; }
+        .mobile-controls { display: none; grid-template-columns: repeat(3, 70px); gap: 10px; justify-content: center; margin-top: 20px; }
+        .mobile-btn { width: 70px; height: 70px; border-radius: 18px; border: 1px solid var(--glass-border); background: rgba(255,255,255,0.05); color: #fff; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .mobile-btn:active { background: var(--primary); color: #000; transform: scale(0.95); box-shadow: 0 0 20px rgba(0,240,255,0.5); }
+        .mobile-btn:nth-child(2) { grid-column: 2; }
+        .mobile-btn:nth-child(3) { grid-column: 1; grid-row: 2; }
+        .mobile-btn:nth-child(4) { grid-column: 2; grid-row: 2; }
+        .mobile-btn:nth-child(5) { grid-column: 3; grid-row: 2; }
+        .game-instructions { color: rgba(255,255,255,0.3); font-size: 0.85rem; margin-top: 10px; }
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto; }
+        .contact-card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px; padding: 35px 25px; text-align: center; transition: all 0.5s; text-decoration: none; color: #fff; display: block; backdrop-filter: blur(10px); }
+        .contact-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 50px rgba(0,240,255,0.1); }
+        .contact-card i { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+        .contact-card.whatsapp i { color: #25d366; }
+        .contact-card.telegram i { color: #0088cc; }
+        .contact-card.phone i { color: var(--primary); }
+        .contact-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
+        .contact-card p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        footer { text-align: center; padding: 60px 20px; border-top: 1px solid var(--glass-border); background: linear-gradient(180deg, transparent, rgba(0,0,0,0.5)); }
+        footer .logo { font-size: 2rem; margin-bottom: 15px; display: inline-block; }
+        footer p { color: rgba(255,255,255,0.3); font-size: 0.9rem; }
+        .social-links { display: flex; justify-content: center; gap: 20px; margin: 25px 0; }
+        .social-links a { width: 50px; height: 50px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 1.2rem; transition: all 0.3s; text-decoration: none; }
+        .social-links a:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,240,255,0.2); }
+        @media (max-width: 768px) { nav { padding: 15px 20px; } .nav-links { display: none; } .hero h1 { font-size: 2.5rem; } .section { padding: 60px 15px; } .mobile-controls { display: grid; } .game-container { padding: 20px 15px; } .game-header { justify-content: center; } }
+        .typing-indicator { display: flex; gap: 5px; padding: 15px 20px; }
+        .typing-indicator span { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: typing 1.4s infinite; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing { 0%,60%,100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-10px); opacity: 1; } }
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas-bg"></canvas>
+    <div class="glow-orb"></div><div class="glow-orb"></div><div class="glow-orb"></div>
+
+    <nav>
+        <div class="logo">𝐌𝐎𝐑𝐁</div>
+        <ul class="nav-links">
+            <li><a href="#home">الرئيسية</a></li>
+            <li><a href="#bots">البوتات</a></li>
+            <li><a href="#ai">الذكاء الاصطناعي</a></li>
+            <li><a href="#game">اللعبة</a></li>
+            <li><a href="#contact">تواصل</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-badge"><i class="fas fa-code"></i> مطور بوتات محترف</div>
+        <h1>𝐌𝐎𝐑𝐁</h1>
+        <p class="subtitle">مرعب | MORBWOLF</p>
+        <p class="desc">مطور بوتات متقدم متخصص في بناء بوتات واتساب وتليجرام ذكية.<br>بوتات يوشينو، ريفن، مرعب، والمزيد من المشاريع المبتكرة.</p>
+        <div class="hero-buttons">
+            <a href="#bots" class="btn btn-primary"><i class="fas fa-robot"></i> استكشف البوتات</a>
+            <a href="#contact" class="btn btn-outline"><i class="fas fa-paper-plane"></i> تواصل معي</a>
+        </div>
+    </section>
+
+    <section class="section" id="bots">
+        <h2 class="section-title reveal">بوتاتي</h2>
+        <p class="section-subtitle reveal">بوتات ذكية متقدمة لخدمات متنوعة</p>
+        <div class="bots-grid">
+            <div class="bot-card reveal">
+                <div class="bot-icon"><i class="fas fa-heart"></i></div>
+                <h3>بوت يوشينو</h3>
+                <p>بوت متكامل للواتساب يوفر ميزات متقدمة مثل التحميل، البحث، والأدوات اليومية بأسلوب أنيمي فريد.</p>
+                <span class="bot-status">يعمل الآن</span>
+            </div>
+            <div class="bot-card reveal">
+                <div class="bot-icon"><i class="fas fa-crow"></i></div>
+                <h3>بوت ريفن</h3>
+                <p>بوت ذكي للتليجرام يوفر حماية متقدمة، إدارة المجموعات، وأدوات ترفيهية متنوعة.</p>
+                <span class="bot-status">يعمل الآن</span>
+            </div>
+            <div class="bot-card reveal">
+                <div class="bot-icon"><i class="fas fa-skull"></i></div>
+                <h3>بوت مرعب</h3>
+                <p>البوت الرسمي لـ MORBWOLF، يوفر ميزات فريدة وأدوات متقدمة للمستخدمين.</p>
+                <span class="bot-status">يعمل الآن</span>
+            </div>
+            <div class="bot-card reveal">
+                <div class="bot-icon"><i class="fas fa-plus"></i></div>
+                <h3>والمزيد...</h3>
+                <p>مشاريع قادمة ومبتكرة في طور التطوير. تابع قنواتي للمزيد من التحديثات والمفاجآت!</p>
+                <span class="bot-status">قريباً</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section ai-section" id="ai">
+        <h2 class="section-title reveal">نموذج الذكاء الاصطناعي</h2>
+        <p class="section-subtitle reveal">تحدث مع مساعد MORBWOLF الذكي</p>
+        <div class="ai-container reveal">
+            <div class="ai-header">
+                <div class="ai-avatar"><i class="fas fa-brain"></i></div>
+                <div class="ai-header-text"><h3>MORBWOLF AI</h3><p>مساعد ذكي متقدد</p></div>
+            </div>
+            <div class="ai-chat" id="ai-chat">
+                <div class="message ai">أهلاً بيك يا بطل! 🐺 أنا مساعد MORBWOLF الذكي. اسألني أي شيء عن البوتات، البرمجة، أو حتى نصايح عامة. جاهز أساعدك!</div>
+            </div>
+            <div class="ai-input-area">
+                <input type="text" class="ai-input" id="ai-input" placeholder="اكتب رسالتك هنا..." autocomplete="off">
+                <button class="ai-send" id="ai-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section game-section" id="game">
+        <h2 class="section-title reveal">لعبة الثعبان المتقدمة</h2>
+        <p class="section-subtitle reveal">أعداء متحركون، مستويات، وقوى خاصة!</p>
+        <div class="game-container reveal">
+            <div class="game-header">
+                <div class="game-score-box"><div class="game-score-label">النقاط</div><div class="game-score-value" id="score">0</div></div>
+                <div class="game-score-box"><div class="game-score-label">المستوى</div><div class="game-level-value" id="level">1</div></div>
+                <div class="game-score-box"><div class="game-score-label">أعلى رقم</div><div class="game-score-value" id="high-score">0</div></div>
+            </div>
+            <canvas id="game-canvas" width="540" height="540"></canvas>
+            <div class="game-power">
+                <button class="power-btn" id="speed-btn"><i class="fas fa-bolt"></i> سرعة</button>
+                <button class="power-btn" id="shield-btn"><i class="fas fa-shield-alt"></i> درع</button>
+                <button class="power-btn" id="ghost-btn"><i class="fas fa-ghost"></i> شبح</button>
+            </div>
+            <div class="game-controls">
+                <button class="game-btn start" id="start-btn"><i class="fas fa-play"></i> ابدأ اللعبة</button>
+                <button class="game-btn pause" id="pause-btn"><i class="fas fa-pause"></i> إيقاف مؤقت</button>
+            </div>
+            <div class="mobile-controls">
+                <div class="mobile-btn" data-dir="up"><i class="fas fa-chevron-up"></i></div>
+                <div class="mobile-btn" data-dir="left"><i class="fas fa-chevron-left"></i></div>
+                <div class="mobile-btn" data-dir="down"><i class="fas fa-chevron-down"></i></div>
+                <div class="mobile-btn" data-dir="right"><i class="fas fa-chevron-right"></i></div>
+            </div>
+            <p class="game-instructions">الأسهم/WASD للتحرك | تجنب الأعداء الحمراء! | كل 50 نقطة مستوى جديد</p>
+        </div>
+    </section>
+
+    <section class="section" id="contact">
+        <h2 class="section-title reveal">تواصل معي</h2>
+        <p class="section-subtitle reveal">تابعني على قنواتي أو راسلني مباشرة</p>
+        <div class="contact-grid">
+            <a href="https://whatsapp.com/channel/0029VbDNsklIHphI8EsT8s1A" target="_blank" class="contact-card whatsapp reveal">
+                <i class="fab fa-whatsapp"></i><h3>قناة الواتساب</h3><p>تابع آخر التحديثات والبوتات الجديدة</p>
+            </a>
+            <a href="https://t.me/MORBWOLF" target="_blank" class="contact-card telegram reveal">
+                <i class="fab fa-telegram"></i><h3>قناة التليجرام</h3><p>انضم لمجتمع MORBWOLF على التليجرام</p>
+            </a>
+            <a href="tel:+201271333659" class="contact-card phone reveal">
+                <i class="fas fa-phone"></i><h3>رقم الهاتف</h3><p>+20 127 133 3659</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="logo">𝐌𝐎𝐑𝐁</div>
+        <div class="social-links">
+            <a href="https://whatsapp.com/channel/0029VbDNsklIHphI8EsT8s1A" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://t.me/MORBWOLF" target="_blank"><i class="fab fa-telegram"></i></a>
+            <a href="tel:+201271333659"><i class="fas fa-phone"></i></a>
+        </div>
+        <p>© 2026 MORBWOLF | جميع الحقوق محفوظة</p>
+        <p style="margin-top:5px;font-size:0.8rem;">صُنع بـ ❤️ بواسطة 𝐌𝐎𝐑𝐁</p>
+    </footer>
+
+    <script>
+        // ============ BACKGROUND ============
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height, drops = [], particles = [];
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        resize(); window.addEventListener('resize', resize);
+        class Drop { constructor() { this.reset(); } reset() { this.x = Math.random()*width; this.y = Math.random()*height; this.size = Math.random()*2+0.5; this.speedY = Math.random()*1.5+0.5; this.speedX = (Math.random()-0.5)*0.5; this.opacity = Math.random()*0.5+0.1; this.life = 0; this.maxLife = Math.random()*200+100; this.color = Math.random()>0.7 ? '0,240,255' : '255,255,255'; } update() { this.y += this.speedY; this.x += this.speedX; this.life++; if (this.y > height || this.life > this.maxLife) { this.reset(); this.y = -10; } } draw() { const alpha = this.opacity*(1-this.life/this.maxLife); ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = `rgba(${this.color},${alpha})`; ctx.fill(); ctx.beginPath(); ctx.arc(this.x, this.y, this.size*3, 0, Math.PI*2); ctx.fillStyle = `rgba(${this.color},${alpha*0.1})`; ctx.fill(); } }
+        class Particle { constructor() { this.reset(); } reset() { this.x = Math.random()*width; this.y = Math.random()*height; this.size = Math.random()*1.5; this.vx = (Math.random()-0.5)*0.3; this.vy = (Math.random()-0.5)*0.3; this.opacity = Math.random()*0.3; } update() { this.x += this.vx; this.y += this.vy; if (this.x<0||this.x>width||this.y<0||this.y>height) this.reset(); } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = `rgba(255,255,255,${this.opacity})`; ctx.fill(); } }
+        for (let i = 0; i < 150; i++) drops.push(new Drop());
+        for (let i = 0; i < 80; i++) particles.push(new Particle());
+        function animateBg() { ctx.clearRect(0, 0, width, height); drops.forEach(d => { d.update(); d.draw(); }); particles.forEach(p => { p.update(); p.draw(); }); particles.forEach((p1, i) => { particles.slice(i+1).forEach(p2 => { const dx = p1.x-p2.x, dy = p1.y-p2.y, dist = Math.sqrt(dx*dx+dy*dy); if (dist < 100) { ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.strokeStyle = `rgba(0,240,255,${0.05*(1-dist/100)})`; ctx.lineWidth = 0.5; ctx.stroke(); } }); }); requestAnimationFrame(animateBg); }
+        animateBg();
+
+        // ============ SCROLL REVEAL ============
+        document.querySelectorAll('.reveal').forEach(el => { new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); }); }, { threshold: 0.1 }).observe(el); });
+
+        // ============ AI CHAT ============
+        const aiChat = document.getElementById('ai-chat'), aiInput = document.getElementById('ai-input'), aiSend = document.getElementById('ai-send');
+        const aiResponses = { 'مرحبا': 'أهلاً وسهلاً يا بطل! 🐺 كيف أقدر أساعدك اليوم؟', 'اهلا': 'أهلاً بيك! جاهز أساعدك في أي شيء تحتاجه.', 'بوت': 'عندي بوتات رهيبة! يوشينو للواتساب، ريفن للتليجرام، وبوت مرعب الرسمي. أي بوت تحب تعرف عنه أكثر؟', 'يوشينو': 'بوت يوشينو هو بوت واتساب متكامل يوفر تحميل الفيديوهات، البحث، الأدوات اليومية، وأكثر! 😍', 'ريفن': 'بوت ريفن هو بوت تليجرام ذكي يوفر حماية المجموعات، الإدارة، والترفيه! 🐦‍⬛', 'مرعب': 'بوت مرعب هو البوت الرسمي لـ MORBWOLF، يوفر ميزات فريدة ومبتكرة! 💀', 'برمجة': 'أنا مطور بوتات محترف! أستخدم Node.js، Python، وأطر عمل متقدمة لبناء بوتات ذكية.', 'سعر': 'الأسعار تختلف حسب نوع البوت والميزات المطلوبة. تواصل معي مباشرة للتفاصيل! 📱', 'تواصل': 'تقدر تتواصل معي عبر الواتساب +20 127 133 3659 أو عبر قنواتي على التليجرام والواتساب.', 'default': 'شكراً لسؤالك! 🐺 أنا مساعد MORBWOLF الذكي. لو عندك سؤال محدد عن البوتات أو البرمجة، قولي وأنا جاهز أساعدك!' };
+        function addMsg(text, isUser) { const msg = document.createElement('div'); msg.className = `message ${isUser ? 'user' : 'ai'}`; msg.textContent = text; aiChat.appendChild(msg); aiChat.scrollTop = aiChat.scrollHeight; }
+        function showTyping() { const t = document.createElement('div'); t.className = 'message ai typing-indicator'; t.id = 'typing'; t.innerHTML = '<span></span><span></span><span></span>'; aiChat.appendChild(t); aiChat.scrollTop = aiChat.scrollHeight; }
+        function hideTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
+        function getAIResponse(input) { const lower = input.toLowerCase(); for (const key in aiResponses) if (lower.includes(key)) return aiResponses[key]; return aiResponses['default']; }
+        function sendMessage() { const text = aiInput.value.trim(); if (!text) return; addMsg(text, true); aiInput.value = ''; showTyping(); setTimeout(() => { hideTyping(); addMsg(getAIResponse(text)); }, 1500 + Math.random()*1000); }
+        aiSend.addEventListener('click', sendMessage);
+        aiInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+        // ============ ADVANCED SNAKE GAME ============
+        const gCanvas = document.getElementById('game-canvas'), gCtx = gCanvas.getContext('2d');
+        const scoreEl = document.getElementById('score'), levelEl = document.getElementById('level'), highScoreEl = document.getElementById('high-score');
+        const startBtn = document.getElementById('start-btn'), pauseBtn = document.getElementById('pause-btn');
+        const speedBtn = document.getElementById('speed-btn'), shieldBtn = document.getElementById('shield-btn'), ghostBtn = document.getElementById('ghost-btn');
+        const gridSize = 18, tileCount = 30;
+        let snake = [{x:15,y:15}], food = {x:20,y:20,type:'normal'}, dx = 0, dy = 0;
+        let score = 0, level = 1, highScore = localStorage.getItem('snakeHighScore') || 0;
+        let gameRunning = false, gamePaused = false, gameLoop, gameSpeed = 120, baseSpeed = 120;
+        let speedActive = false, shieldActive = false, ghostActive = false;
+        let speedCooldown = false, shieldCooldown = false, ghostCooldown = false;
+        let speedTimer = 0, shieldTimer = 0, ghostTimer = 0;
+        let enemies = [], enemySpawnTimer = 0, particles2 = [];
+        const foodColors = { normal: '#ff3333', golden: '#ffd700', speed: '#00f0ff', shield: '#00ff88', ghost: '#aa66ff' };
+        highScoreEl.textContent = highScore;
+
+        function spawnEnemy() { if (enemies.length >= level + 1) return; let pos; do { pos = { x: Math.floor(Math.random()*tileCount), y: Math.floor(Math.random()*tileCount) }; } while (snake.some(s => s.x === pos.x && s.y === pos.y) || (pos.x === food.x && pos.y === food.y) || enemies.some(e => e.x === pos.x && e.y === pos.y)); enemies.push({ x: pos.x, y: pos.y, dir: Math.floor(Math.random()*4), moveTimer: 0 }); }
+        function moveEnemies() { enemies.forEach(e => { e.moveTimer++; if (e.moveTimer < Math.max(2, 5-level)) return; e.moveTimer = 0; const dirs = [{dx:0,dy:-1},{dx:1,dy:0},{dx:0,dy:1},{dx:-1,dy:0}]; if (Math.random() < 0.3) e.dir = Math.floor(Math.random()*4); let nx = e.x + dirs[e.dir].dx, ny = e.y + dirs[e.dir].dy; if (nx < 0 || nx >= tileCount || ny < 0 || ny >= tileCount) { e.dir = (e.dir + 2) % 4; nx = e.x + dirs[e.dir].dx; ny = e.y + dirs[e.dir].dy; } e.x = nx; e.y = ny; }); }
+        function spawnParticles(x, y, color, count = 8) { for (let i = 0; i < count; i++) particles2.push({ x: x*gridSize+gridSize/2, y: y*gridSize+gridSize/2, vx: (Math.random()-0.5)*6, vy: (Math.random()-0.5)*6, life: 1, color: color, size: Math.random()*4+2 }); }
+        function updateParticles() { for (let i = particles2.length-1; i >= 0; i--) { const p = particles2[i]; p.x += p.vx; p.y += p.vy; p.life -= 0.03; p.size *= 0.95; if (p.life <= 0) particles2.splice(i, 1); } }
+        function drawParticles() { particles2.forEach(p => { gCtx.globalAlpha = p.life; gCtx.fillStyle = p.color; gCtx.shadowColor = p.color; gCtx.shadowBlur = 10; gCtx.beginPath(); gCtx.arc(p.x, p.y, p.size, 0, Math.PI*2); gCtx.fill(); gCtx.shadowBlur = 0; gCtx.globalAlpha = 1; }); }
+        function placeFood() { const types = level >= 3 ? ['normal','normal','golden','speed','shield','ghost'] : ['normal','normal','normal','golden']; food = { x: Math.floor(Math.random()*tileCount), y: Math.floor(Math.random()*tileCount), type: types[Math.floor(Math.random()*types.length)] }; while (snake.some(s => s.x === food.x && s.y === food.y) || enemies.some(e => e.x === food.x && e.y === food.y)) { food.x = Math.floor(Math.random()*tileCount); food.y = Math.floor(Math.random()*tileCount); } }
+        function activatePower(type) { const now = Date.now(); if (type === 'speed') { if (speedCooldown) return; speedActive = true; speedTimer = now + 5000; gameSpeed = baseSpeed / 2; speedBtn.classList.add('active'); speedCooldown = true; setTimeout(() => { speedCooldown = false; speedBtn.classList.remove('cooldown'); }, 15000); speedBtn.classList.add('cooldown'); } else if (type === 'shield') { if (shieldCooldown) return; shieldActive = true; shieldTimer = now + 8000; shieldBtn.classList.add('active'); shieldCooldown = true; setTimeout(() => { shieldCooldown = false; shieldBtn.classList.remove('cooldown'); }, 20000); shieldBtn.classList.add('cooldown'); } else if (type === 'ghost') { if (ghostCooldown) return; ghostActive = true; ghostTimer = now + 6000; ghostBtn.classList.add('active'); ghostCooldown = true; setTimeout(() => { ghostCooldown = false; ghostBtn.classList.remove('cooldown'); }, 18000); ghostBtn.classList.add('cooldown'); } clearInterval(gameLoop); gameLoop = setInterval(updateGame, gameSpeed); }
+        function updatePowerUps() { const now = Date.now(); if (speedActive && now > speedTimer) { speedActive = false; gameSpeed = baseSpeed; speedBtn.classList.remove('active'); clearInterval(gameLoop); gameLoop = setInterval(updateGame, gameSpeed); } if (shieldActive && now > shieldTimer) { shieldActive = false; shieldBtn.classList.remove('active'); } if (ghostActive && now > ghostTimer) { ghostActive = false; ghostBtn.classList.remove('active'); } }
+        function drawGame() { gCtx.fillStyle = 'rgba(0,0,0,0.3)'; gCtx.fillRect(0, 0, gCanvas.width, gCanvas.height); gCtx.strokeStyle = 'rgba(0,240,255,0.03)'; gCtx.lineWidth = 0.5; for (let i = 0; i <= tileCount; i++) { gCtx.beginPath(); gCtx.moveTo(i*gridSize, 0); gCtx.lineTo(i*gridSize, gCanvas.height); gCtx.stroke(); gCtx.beginPath(); gCtx.moveTo(0, i*gridSize); gCtx.lineTo(gCanvas.width, i*gridSize); gCtx.stroke(); } const fc = foodColors[food.type]; gCtx.shadowColor = fc; gCtx.shadowBlur = 20; const fx = food.x*gridSize+gridSize/2, fy = food.y*gridSize+gridSize/2; const pulse = 1 + Math.sin(Date.now()/200)*0.2; gCtx.fillStyle = fc; gCtx.beginPath(); gCtx.arc(fx, fy, (gridSize/2-2)*pulse, 0, Math.PI*2); gCtx.fill(); gCtx.fillStyle = 'rgba(255,255,255,0.5)'; gCtx.beginPath(); gCtx.arc(fx-2, fy-2, 3, 0, Math.PI*2); gCtx.fill(); gCtx.shadowBlur = 0; enemies.forEach(e => { gCtx.fillStyle = '#ff4444'; gCtx.shadowColor = '#ff4444'; gCtx.shadowBlur = 15; gCtx.fillRect(e.x*gridSize+2, e.y*gridSize+2, gridSize-4, gridSize-4); gCtx.fillStyle = '#fff'; gCtx.shadowBlur = 0; gCtx.fillRect(e.x*gridSize+5, e.y*gridSize+5, 3, 3); gCtx.fillRect(e.x*gridSize+10, e.y*gridSize+5, 3, 3); }); snake.forEach((seg, i) => { let sc, gc; if (ghostActive) { sc = `rgba(170,102,255,${0.3+(1-i/snake.length)*0.4})`; gc = '#aa66ff'; } else if (shieldActive) { sc = `rgba(0,255,136,${0.5+(1-i/snake.length)*0.5})`; gc = '#00ff88'; } else if (speedActive) { sc = `rgba(0,240,255,${0.6+(1-i/snake.length)*0.4})`; gc = '#00f0ff'; } else { sc = `rgba(0,240,255,${0.4+(1-i/snake.length)*0.6})`; gc = '#00f0ff'; } gCtx.fillStyle = sc; gCtx.shadowColor = gc; gCtx.shadowBlur = i === 0 ? 20 : 8; const sx = seg.x*gridSize+1, sy = seg.y*gridSize+1, sw = gridSize-2; if (i === 0) { gCtx.beginPath(); gCtx.roundRect(sx, sy, sw, sw, 6); gCtx.fill(); if (!ghostActive) { gCtx.fillStyle = '#fff'; gCtx.shadowBlur = 0; let ex1, ey1, ex2, ey2; if (dx === 1) { ex1 = sx+sw-6; ey1 = sy+4; ex2 = sx+sw-6; ey2 = sy+sw-8; } else if (dx === -1) { ex1 = sx+3; ey1 = sy+4; ex2 = sx+3; ey2 = sy+sw-8; } else if (dy === -1) { ex1 = sx+4; ey1 = sy+3; ex2 = sx+sw-8; ey2 = sy+3; } else { ex1 = sx+4; ey1 = sy+sw-6; ex2 = sx+sw-8; ey2 = sy+sw-6; } gCtx.fillRect(ex1, ey1, 3, 3); gCtx.fillRect(ex2, ey2, 3, 3); } } else { gCtx.fillRect(sx, sy, sw, sw); } gCtx.shadowBlur = 0; }); if (shieldActive) { const h = snake[0]; gCtx.strokeStyle = 'rgba(0,255,136,0.3)'; gCtx.lineWidth = 2; gCtx.shadowColor = '#00ff88'; gCtx.shadowBlur = 15; gCtx.beginPath(); gCtx.arc(h.x*gridSize+gridSize/2, h.y*gridSize+gridSize/2, gridSize+4+Math.sin(Date.now()/100)*3, 0, Math.PI*2); gCtx.stroke(); gCtx.shadowBlur = 0; } drawParticles(); if (speedActive || shieldActive || ghostActive) { gCtx.fillStyle = 'rgba(0,0,0,0.5)'; gCtx.fillRect(10, 10, 200, 30); gCtx.font = '12px Tajawal'; let st = ''; if (speedActive) st += '⚡ سرعة '; if (shieldActive) st += '🛡️ درع '; if (ghostActive) st += '👻 شبح '; gCtx.fillStyle = '#fff'; gCtx.textAlign = 'left'; gCtx.fillText(st, 15, 30); } }
+        function updateGame() { if (!gameRunning || gamePaused) return; updatePowerUps(); moveEnemies(); updateParticles(); enemySpawnTimer++; if (enemySpawnTimer > 150) { enemySpawnTimer = 0; spawnEnemy(); } const head = { x: snake[0].x + dx, y: snake[0].y + dy }; if (ghostActive) { if (head.x < 0) head.x = tileCount - 1; if (head.x >= tileCount) head.x = 0; if (head.y < 0) head.y = tileCount - 1; if (head.y >= tileCount) head.y = 0; } else { if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) { gameOver(); return; } } if (!ghostActive && snake.some(s => s.x === head.x && s.y === head.y)) { gameOver(); return; } if (!shieldActive) { for (const e of enemies) { if (e.x === head.x && e.y === head.y) { gameOver(); return; } } } snake.unshift(head); if (head.x === food.x && head.y === food.y) { const points = food.type === 'golden' ? 30 : food.type === 'normal' ? 10 : 15; score += points; scoreEl.textContent = score; if (score > highScore) { highScore = score; highScoreEl.textContent = highScore; localStorage.setItem('snakeHighScore', highScore); } if (food.type === 'speed') activatePower('speed'); else if (food.type === 'shield') activatePower('shield'); else if (food.type === 'ghost') activatePower('ghost'); spawnParticles(food.x, food.y, foodColors[food.type], 12); if (score % 50 === 0) { level++; levelEl.textContent = level; baseSpeed = Math.max(50, 120 - level * 8); if (!speedActive) { gameSpeed = baseSpeed; clearInterval(gameLoop); gameLoop = setInterval(updateGame, gameSpeed); } spawnEnemy(); } placeFood(); } else { snake.pop(); } drawGame(); }
+        function gameOver() { gameRunning = false; clearInterval(gameLoop); gCtx.fillStyle = 'rgba(0,0,0,0.85)'; gCtx.fillRect(0, 0, gCanvas.width, gCanvas.height); gCtx.fillStyle = '#ff4444'; gCtx.font = 'bold 35px Orbitron'; gCtx.textAlign = 'center'; gCtx.fillText('GAME OVER', gCanvas.width/2, gCanvas.height/2 - 30); gCtx.fillStyle = '#00f0ff'; gCtx.font = '22px Tajawal'; gCtx.fillText(`النقاط: ${score} | المستوى: ${level}`, gCanvas.width/2, gCanvas.height/2 + 20); gCtx.fillStyle = '#00ff88'; gCtx.font = '16px Tajawal'; gCtx.fillText('اضغط "ابدأ اللعبة" للمحاولة مرة أخرى', gCanvas.width/2, gCanvas.height/2 + 60); startBtn.innerHTML = '<i class="fas fa-redo"></i> العب مرة أخرى'; enemies = []; speedActive = false; shieldActive = false; ghostActive = false; speedBtn.classList.remove('active'); shieldBtn.classList.remove('active'); ghostBtn.classList.remove('active'); }
+        function startGame() { snake = [{x:15,y:15}]; dx = 1; dy = 0; score = 0; level = 1; scoreEl.textContent = score; levelEl.textContent = level; baseSpeed = 120; gameSpeed = 120; gameRunning = true; gamePaused = false; enemies = []; enemySpawnTimer = 0; particles2 = []; placeFood(); clearInterval(gameLoop); gameLoop = setInterval(updateGame, gameSpeed); startBtn.innerHTML = '<i class="fas fa-play"></i> ابدأ اللعبة'; }
+        startBtn.addEventListener('click', startGame);
+        pauseBtn.addEventListener('click', () => { if (!gameRunning) return; gamePaused = !gamePaused; pauseBtn.innerHTML = gamePaused ? '<i class="fas fa-play"></i> استئناف' : '<i class="fas fa-pause"></i> إيقاف مؤقت'; });
+        speedBtn.addEventListener('click', () => activatePower('speed'));
+        shieldBtn.addEventListener('click', () => activatePower('shield'));
+        ghostBtn.addEventListener('click', () => activatePower('ghost'));
+        document.addEventListener('keydown', e => { if (!gameRunning) return; switch(e.key) { case 'ArrowUp': case 'w': case 'W': if (dy !== 1) { dx = 0; dy = -1; } break; case 'ArrowDown': case 's': case 'S': if (dy !== -1) { dx = 0; dy = 1; } break; case 'ArrowLeft': case 'a': case 'A': if (dx !== 1) { dx = -1; dy = 0; } break; case 'ArrowRight': case 'd': case 'D': if (dx !== -1) { dx = 1; dy = 0; } break; case ' ': e.preventDefault(); activatePower('speed'); break; } });
+        document.querySelectorAll('.mobile-btn').forEach(btn => { btn.addEventListener('click', () => { if (!gameRunning) return; const dir = btn.dataset.dir; switch(dir) { case 'up': if (dy !== 1) { dx = 0; dy = -1; } break; case 'down': if (dy !== -1) { dx = 0; dy = 1; } break; case 'left': if (dx !== 1) { dx = -1; dy = 0; } break; case 'right': if (dx !== -1) { dx = 1; dy = 0; } break; } }); });
+        drawGame();
+
+        // ============ SMOOTH SCROLL ============
+        document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
+    </script>
+</body>
+  </html>
